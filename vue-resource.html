@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="node_modules/vue/dist/vue.js"></script>
+  <script src="node_modules/vue-resource/dist/vue-resource.js"></script>
+</head>
+
+<body>
+  <div id="app" class="container">
+    <h1>vue-resource讲解</h1>
+    <a href="javascript:;" class="btn btn-primary" @click='get'>get请求</a>
+    <a href="javascript:;" class="btn btn-primary" @click='post'>post请求</a>
+    <a href="javascript:;" class="btn btn-primary">jsonp请求</a>
+    <div>{{msg}}</div>
+  </div>
+  <script>
+  new Vue({
+      el:"#app",
+      data() {
+          return {
+              msg:''
+          }
+      },
+      mounted() {
+          Vue.http.interceptors.push((request,next)=>{
+              console.log('request init')
+              next(res=>{
+                  console.log('res init')
+                  return res
+              })
+          })
+      },
+      methods: {
+          get:function(){
+              console.log('进入')
+              this.$http.get("package.json",{
+                  params:{
+                      userId:'101'
+                  },
+                  headers:{
+                      token:'abcd'
+                  }
+              }).then(res=>{
+                  this.msg=res.data
+              },err=>{
+                  this.msg=err
+              });
+          },
+          post:function(){
+            console.log('进入post')
+              this.$http.post('package.json',{
+                  userId:"102"
+              },{
+                  headers:{
+                      access_token:'abc'
+                  }
+              }).then(res=>{
+                  this.msg=res.data
+              })
+          }
+      },
+      })
+  </script>
+</body>
+
+</html>
