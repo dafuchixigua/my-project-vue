@@ -1,6 +1,6 @@
 # imoocmall
 
-> my-project-vue
+> my-project-vue-321
 
 ## Build Setup
 
