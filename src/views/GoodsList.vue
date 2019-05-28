@@ -10,87 +10,43 @@
             <span class="sortby">Sort by:</span>
             <a href="javascript:void(0)" class="default cur">Default</a>
             <a href="javascript:void(0)" class="price">Price <svg class="icon icon-arrow-short"><use xlink:href="#icon-arrow-short"></use></svg></a>
-            <a href="javascript:void(0)" class="filterby stopPop">Filter by</a>
+            <a href="javascript:void(0)" class="filterby stopPop" @click="showFilterPop">Filter by</a>
           </div>
           <div class="accessory-result">
             <!-- filter -->
-            <div class="filter stopPop" id="filter">
+            <div class="filter stopPop" id="filter" :class="{'filterby-show':filterBy}">
               <dl class="filter-price">
                 <dt>Price:</dt>
-                <dd><a href="javascript:void(0)">All</a></dd>
-                <dd>
-                  <a href="javascript:void(0)">0 - 100</a>
-                </dd>
-                <dd>
-                  <a href="javascript:void(0)">100 - 500</a>
-                </dd>
-                <dd>
-                  <a href="javascript:void(0)">500 - 1000</a>
-                </dd>
-                <dd>
-                  <a href="javascript:void(0)">1000 - 2000</a>
+                <dd><a href="javascript:void(0)" :class="{'cur':priceChecked=='All'}" @click="priceChecked='All'">All</a></dd>
+                <dd v-for="(price,index) in priceFilter" :key="index">
+                  <a href="javascript:void(0)" :class="{'cur':priceChecked==index}" @click="setPriceFilter(index)">{{price.startPrice}}</a>
                 </dd>
               </dl>
             </div>
-
             <!-- search result accessories list -->
             <div class="accessory-list-wrap">
               <div class="accessory-list col-4">
                 <ul>
-                  <li>
+                  <li v-for="(item,index) in goodsList" :key="index">
                     <div class="pic">
-                      <a href="#"><img src="static/1.jpg" alt=""></a>
+                      <a href="#"><img v-lazy="'static/'+item.productImg" alt=""></a>
                     </div>
                     <div class="main">
-                      <div class="name">XX</div>
-                      <div class="price">999</div>
+                      <div class="name">{{item.productName}}</div>
+                      <div class="price">{{item.productPrice}}</div>
                       <div class="btn-area">
                         <a href="javascript:;" class="btn btn--m">加入购物车</a>
                       </div>
                     </div>
                   </li>
-                  <li>
-                    <div class="pic">
-                      <a href="#"><img src="static/2.jpg" alt=""></a>
-                    </div>
-                    <div class="main">
-                      <div class="name">XX</div>
-                      <div class="price">1000</div>
-                      <div class="btn-area">
-                        <a href="javascript:;" class="btn btn--m">加入购物车</a>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="pic">
-                      <a href="#"><img src="static/3.jpg" alt=""></a>
-                    </div>
-                    <div class="main">
-                      <div class="name">XX</div>
-                      <div class="price">500</div>
-                      <div class="btn-area">
-                        <a href="javascript:;" class="btn btn--m">加入购物车</a>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="pic">
-                      <a href="#"><img src="static/4.jpg" alt=""></a>
-                    </div>
-                    <div class="main">
-                      <div class="name">XX</div>
-                      <div class="price">2499</div>
-                      <div class="btn-area">
-                        <a href="javascript:;" class="btn btn--m">加入购物车</a>
-                      </div>
-                    </div>
-                  </li>
+            
                 </ul>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <div class="md-overlay" v-show="overLay" @click="closePop"></div>
     <nav-footer></nav-footer>
     </div>
 </template>
@@ -100,16 +56,49 @@
     import NavHeader from './../components/NavHeader.vue'
     import NavFooter from './../components/NavFooter.vue'
     import NavBread from './../components/NavBread.vue'
+    import axios from 'axios'
     export default{
         data(){
             return {
-
+              goodsList:[],
+              priceFilter:[{
+                startPrice:'0-500'
+              },{
+                  startPrice:'500-1000'
+              },{
+                  startPrice:'1000-2000'
+              }],
+              priceChecked:'All',
+              filterBy:"",
+              overLay:''
             }
         },
         components:{
             NavHeader,
             NavFooter,
             NavBread
+        },
+        mounted(){
+          this.getGoodsList()
+        },
+        methods:{
+          getGoodsList(){
+            axios.get("/goods").then(res=>{
+              this.goodsList=res.data.result
+            })
+          },
+          showFilterPop(){
+            this.filterBy=true
+            this.overLay=true
+          },
+          setPriceFilter(index){
+            this.priceChecked=index
+            this.closePop()
+          },
+          closePop(){
+            this.filterBy=false
+            this.overLay=false
+          }
         }
     }
 </script>
