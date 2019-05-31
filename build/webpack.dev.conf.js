@@ -18,11 +18,12 @@ const portfinder = require('portfinder')
 //   res.json(goodsData)
 // })
 // app.use(router)
-const express=require('express')
-const app=express()
-var goodsData=require('./../mock/goods.json')
-var router=express.Router()
-app.use(router)
+
+// const express=require('express')
+// const app=express()
+// var goodsData=require('./../mock/goods.json')
+// var router=express.Router()
+// app.use(router)
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -57,11 +58,11 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     watchOptions: {
       poll: config.dev.poll,
     },
-    before(router){
-      router.get("/goods",function(req,res,next){
-        res.json(goodsData)
-    })
-    }
+    // before(router){
+    //   router.get("/goods",function(req,res,next){
+    //     res.json(goodsData)
+    // })
+    // }
   },
   plugins: [
     new webpack.DefinePlugin({
