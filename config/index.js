@@ -20,12 +20,8 @@ module.exports = {
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
     proxyTable: {
-      '/restful':{
-        target:'my-project-vue/',
-        changeOrigin:true,
-        pathRewrite:{//可以不写
-            '^/restful':'/restful'
-        }
+      '/goods':{
+        target:'http://localhost:3000',
       }
     },
     
