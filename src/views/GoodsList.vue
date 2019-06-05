@@ -35,7 +35,7 @@
                       <div class="name">{{item.productName}}</div>
                       <div class="price">{{item.salePrice}}</div>
                       <div class="btn-area">
-                        <a href="javascript:;" class="btn btn--m">加入购物车</a>
+                        <a href="javascript:;" class="btn btn--m" @click="addCart(item.productId)">加入购物车</a>
                       </div>
                     </div>
                   </li> 
@@ -50,20 +50,44 @@
         </div>
       </div>
       <div class="md-overlay" v-show="overLay" @click="closePop"></div>
+     <modal :mdShow="mdShow" @closeModal="closeModal">
+       <p slot="message">请先登录否则无法加入购物车！</p>
+       <div slot="btnGroup">
+         <a class="btn btn--m" href="javaScript:;" @click="mdShow=false">关闭</a>
+       </div>
+     </modal>
+        <modal :mdShow="mdShowCart" @closeModal="closeModal">
+       <p slot="message">
+            <svg class="icon-status-ok">
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-status-ok"></use>
+            </svg>
+              <span>加入购物车成功</span>
+       </p>
+       <div slot="btnGroup">
+         <a class="btn btn--m" href="javaScript:;" @click="mdShowCart=false">继续购物</a>
+         <router-link class="btn btn--m" href="javaScript:;" to="/cart">查看购物车</router-link>
+       </div>
+     </modal>
     <nav-footer></nav-footer>
     </div>
 </template>
 <script>
+
     import './../assets/css/base.css'
     import './../assets/css/product.css'
     import NavHeader from './../components/NavHeader.vue'
     import NavFooter from './../components/NavFooter.vue'
     import NavBread from './../components/NavBread.vue'
     import axios from 'axios'
+    import { constants } from 'fs';
+    import Modal from './../components/modal'
+
     export default{
         data(){
             return {
               goodsList:[],
+              mdShow:false,
+              mdShowCart:false,
               priceFilter:[{
                 startPrice:'All'
               },{
@@ -86,10 +110,12 @@
 
             }
         },
+      
         components:{
             NavHeader,
             NavFooter,
-            NavBread
+            NavBread,
+            Modal
         },
         mounted(){
           this.getGoodsList()
@@ -103,7 +129,7 @@
               priceLevel:this.priceChecked
             }
             this.loading=true
-            axios.get("/goods",{
+            axios.get("/goods/list",{
               params
             }).then(res=>{
               this.loading=false
@@ -141,6 +167,8 @@
             this.overLay=true
           },
           setPriceFilter(index){
+            this.page=1
+            this.busy=false
             this.priceChecked=index
             this.closePop()
             this.getGoodsList()
@@ -148,7 +176,35 @@
           closePop(){
             this.filterBy=false
             this.overLay=false
+          },
+          addCart(productId){
+            let obj={}
+            obj.id=1
+            obj.sex="男"
+            console.log(obj,"进入加入购物车")
+            axios.post("/goods/addCart",{productId}).then(res=>{
+             console.log(res,'10000000000000000000')
+              if(res.data.status=="0"){
+             this.mdShowCart=true
+              }else{
+               this.mdShow=true
+              }
+            })
+          },
+          closeModal(){
+               this.mdShow=false
           }
         }
     }
 </script>
+<style>
+/* .navbar{
+  display: flex;
+    justify-content: space-between;
+}
+.navbar-cart-logo{
+  width: 30px;
+  height: 40px;
+} */
+</style>
+

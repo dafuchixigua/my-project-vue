@@ -15,7 +15,8 @@ mongoose.connection.on('error',()=>{
 mongoose.connection.on('disconnected',()=>{
     console.log("MongoDB connected disconnected")
 })
-router.get('/',(req,res,next)=>{
+//查询商品列表
+router.get('/list',(req,res,next)=>{
     // res.send('hellow,world')
     let page=parseInt(req.param("page")) 
     let pageSize=parseInt(req.param("pageSize"))
@@ -57,6 +58,80 @@ router.get('/',(req,res,next)=>{
                     list:doc 
                 }
             })
+        }
+    })
+})
+//加入购物车接口
+router.post('/addCart',(req,res,next)=>{
+    let userId='100000077'
+    let productId=req.body.productId
+    let User=require('../models/user')
+    User.findOne({userId},(err,userDoc)=>{
+        if(err){
+            res.json({
+                status:"1",
+                msg:err.message
+            })
+        }else{
+            // console.log('userDoc:'+userDoc)
+            if(userDoc){
+                let goodsItem=''
+                userDoc.cartList.forEach(item => {
+                    if(item.productId==productId){
+                        goodsItem=item
+                        item.productNum++
+
+                    }
+                });
+                if(goodsItem){
+                            userDoc.save((err2,doc2)=>{
+                                    if(err2){
+                                        res.json({
+                                            status:"1",
+                                            msg:err2.message
+                                        })
+                                    }else{
+                                        res.json({
+                                            status:"0",
+                                            msg:'',
+                                            result:"suc"
+                                        })
+                                    }
+                                })
+                }else{
+                    Goods.findOne({productId},(err1,doc)=>{
+                        if(err1){
+                            res.json({
+                                status:"1",
+                                msg:err1.message
+                            })
+                        }else{
+                            if(doc){
+                                let obj=doc.toObject()
+                                obj.productNum=1
+                                obj.checked=1 
+                                // console.log(obj,'商品信息')         
+                                userDoc.cartList.push(obj)
+                                userDoc.save((err2,doc2)=>{
+                                    if(err2){
+                                        res.json({
+                                            status:"1",
+                                            msg:err2.message
+                                        })
+                                    }else{
+                                        res.json({
+                                            status:"0",
+                                            msg:'',
+                                            result:"suc"
+                                        })
+                                    }
+                                })
+                            }
+                        }
+                    })
+                }
+             
+            }
         }
     })
 })
