@@ -2,6 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 // import HelloWorld from '@/components/HelloWorld'
 import GoodsList from './../views/GoodsList.vue'
+import Cart from './../views/Cart.vue'
+import Address from './../views/Address.vue'
+import OrderConfirm from './../views/OrderConfirm.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -11,6 +14,20 @@ export default new Router({
       name: 'GoodsList',
       component: GoodsList
     },
- 
+    {
+      path: '/cart',
+      name: 'Cart',
+      component: Cart
+    },
+    {
+      path: '/address',
+      name: 'Address',
+      component: Address
+    },
+    {
+      path: '/orderConfirm/:addressId/:id',
+      name: 'OrderConfirm',
+      component: OrderConfirm
+    },
   ]
 })
