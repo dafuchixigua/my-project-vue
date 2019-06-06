@@ -7,13 +7,13 @@ router.get('/', function(req, res, next) {
 });
 //登录接口
 router.post('/login',(req,res,next)=>{
-  console.log(req.body)
+
   let param={
     userName:req.body.userName,
     userPwd:req.body.userPwd
   }
   User.findOne(param,(err,doc)=>{
-    console.log(err,doc,"返回的东西")
+
     if(err){
       res.json({
         status:"1",
@@ -147,7 +147,7 @@ router.post("/editCheckAll",(req,res,next)=>{
           if(err1){
             res.json({
               status:"1",
-              msg:err.message,
+              msg:err1.message,
               result:""
             })
           }else{
@@ -162,5 +162,85 @@ router.post("/editCheckAll",(req,res,next)=>{
      
    })   
 
+})
+//查询用户地址接口
+router.get("/addressList",(req,res,next)=>{
+  let userId=req.cookies.userId
+  User.findOne({userId},(err,doc)=>{
+   
+      if(err){
+        res.json({
+          status:"1",
+          msg:err.message,
+          result:""
+        })
+      }else{
+        res.json({
+          status:"0",
+          msg:"",
+          result:doc.addressList
+        })
+      }
+    
+  })
+})
+//设置默认地址
+router.post("/setDefault",(req,res,next)=>{
+  let userId=req.cookies.userId,
+      addressId=req.body.addressId
+  User.findOne({userId},(err,doc)=>{
+    if(err){
+      res.json({
+        status:"1",
+        msg:err.message,
+        result:""
+      })
+    }else{
+      let addressList=doc.addressList
+      for(let v of addressList){
+        if(v.addressId==addressId){
+          v.isDefault=true
+        }else{
+          v.isDefault=false
+        }
+      }
+      doc.save((err1,doc1)=>{
+        if(err1){
+          res.json({
+            status:"1",
+            msg:err1.message,
+            result:""
+          })
+        }else{
+          res.json({
+            status:"0",
+            msg:"",
+            result:''
+          })
+        }
+      })
+    }
+  })
+})
+//删除地址接口
+router.post("/addressDel",(req,res,next)=>{
+  let userId=req.cookies.userId
+      addressId=req.body.addressId
+      // console.log(req,'0000000001212')
+  User.update({userId},{$pull:{'addressList':{'addressId':addressId}}},(err,doc)=>{
+    if(err){
+      res.json({
+        status:"1",
+        msg:err.message,
+        result:""
+      })
+    }else{
+      res.json({
+        status:"0",
+        msg:"",
+        result:'suc'
+      })
+    }
+  })
 })
 module.exports = router;

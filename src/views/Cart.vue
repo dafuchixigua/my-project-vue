@@ -124,7 +124,7 @@
                 Item total: <span class="total-price">{{totalPrice | currency("$")}}</span>
               </div>
               <div class="btn-wrap">
-                <a class="btn btn--red">Checkout</a>
+                <a class="btn btn--red" :class="{'btn-dis':checkedCount==0}" @click="checkOut">Checkout</a>
               </div>
             </div>
           </div>
@@ -143,7 +143,7 @@
 </template>
 
 <script>
-     import './../assets/css/checkout.css'
+    import './../assets/css/checkout.css'
     import './../assets/css/base.css'
     import './../assets/css/product.css'
     import NavHeader from './../components/NavHeader.vue'
@@ -152,7 +152,7 @@
     import axios from 'axios'
     import { constants } from 'fs';
     import Modal from './../components/modal'
-        import {currency} from './../utils/currency'
+    import {currency} from './../utils/currency'
 export default {
     
   data () {
@@ -250,6 +250,12 @@ export default {
       }).then(res=>{
 
       })
+    },
+    checkOut(){
+      if(this.checkedCount>0){
+ this.$router.push("/address")
+      }
+     
     }
   }
 }
