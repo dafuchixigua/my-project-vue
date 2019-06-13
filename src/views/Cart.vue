@@ -210,12 +210,17 @@ export default {
       this.productId=productId
     },
     delCart(){
+      let cartList=this.cartList.filter(item=>{
+        return item.productId==this.productId
+      })
+      console.log(cartList)
       axios.post("/users/cart/del",{
         productId:this.productId
       }).then(res=>{
         if(res.data.status==0){
           this.modalConfirm=false
           this.init()
+          this.$store.commit("updateCount",-cartList[0].productNum)
         }
       })
     },
@@ -223,13 +228,16 @@ export default {
      this.modalConfirm=false
     },
     eiitCart(flag,item){
+      let num=0
       if(flag=='add'){
         item.productNum++
+        num=1
       }else if(flag=='minus'){
         if( item.productNum<=1){
           return
         }
         item.productNum--
+        num=-1
       }else{
         item.checked= item.checked=='1'?'0':'1'
       }
@@ -237,6 +245,8 @@ export default {
         productId:item.productId,
         productNum:item.productNum,
         checked:item.checked
+      }).then(res=>{
+        this.$store.commit("updateCount",num)
       })
     },
     toggleCheckAll(){

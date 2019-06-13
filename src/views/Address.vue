@@ -121,7 +121,7 @@
       </div>
       <div class="next-btn-wrap">
         <!-- <a class="btn btn--m btn--red">Next</a> -->
-        <router-link class="btn btn--m btn--red" :to="{name:'OrderConfirm',params:{'addressId':checkAddressId,'id':123}}">Next</router-link>
+        <router-link active-class="active" class="btn btn--m btn--red" :to="{name:'OrderConfirm',params:{'addressId':checkAddressId,'id':123}}">Next</router-link>
       </div>
     </div>
   </div>
@@ -133,6 +133,7 @@
                <a href="javascript:;" class="btn btn--m" @click="isMdShow=false">取消</a>
         </div>
     </modal>
+    <!-- <router-view></router-view> -->
 <nav-footer></nav-footer>
 </div>
 </template>
@@ -156,7 +157,7 @@ export default {
         checkIndex:0,
         isMdShow:false,
         addressId:"",
-        checkAddressId:"",
+        checkAddressId:0
     };
   },
 
@@ -175,7 +176,9 @@ export default {
       }
   },
 
-
+  filters:{
+    currency:currency
+  },
   methods: {
       init(){
           axios.get("/users/addressList").then(res=>{
@@ -220,4 +223,7 @@ export default {
 
 </script>
 <style  scoped>
+.active{
+  background: black
+}
 </style>

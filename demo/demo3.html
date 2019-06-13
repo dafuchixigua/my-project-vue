@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue-actions</title>
+  <script src="/node_modules/vue/dist/vue.js"></script>
+  <script src="/node_modules/vuex/dist/vuex.min.js"></script>
+</head>
+
+<body>
+
+  <div id="app">
+    <h2>{{msg}}</h2>
+    <a href="javascript:;" @click="add">点我</a>
+    <counter></counter>
+  </div>
+  <script>
+         const counter = {
+      template: `<div>
+        <div>{{count}}</div>
+        <div>{{name}}</div>
+        <div>你好：{{userName}}</div>
+        </div>`,
+      computed: {
+        count(){
+            return this.$store.state.count
+        },
+        name(){
+            return this.$store.state.name
+        },
+        userName(){
+            return this.$store.getters.userName
+        }
+      },
+    }
+    const store = new Vuex.Store({
+      state: {
+        count: 10,
+        name:"jack"
+      },
+      getters:{
+        userName(state){
+            return state.name+'，hellow'
+        }
+      },
+      mutations:{
+        increase(state,num){
+            state.count=num
+        },
+        changeName(state){
+            state.name='大福吃西瓜'
+        }
+      },
+      actions:{
+        increaseActions(context,num){
+            context.commit("increase",num)
+        }
+      }
+    })
+    new Vue({
+        el: "#app",
+        store,
+        data:{
+        msg:'hellow world'
+        },
+        components:{
+            counter
+        },
+        methods: {
+            add(){
+                this.$store.dispatch("increaseActions",100)
+            // this.$store.commit("increase",100)
+            // this.$store.commit("changeName")
+            }
+        },
+
+
+    })
+ 
+
+  </script>
+</body>
+
+</html>

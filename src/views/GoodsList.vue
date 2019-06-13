@@ -122,16 +122,34 @@
         },
         methods:{
           getGoodsList(flag){
-            let params={
+            let params1={
               page:this.page,
               pageSize:this.pageSzie,
               sort:this.sortFlag?1:-1,
               priceLevel:this.priceChecked
             }
             this.loading=true
-            axios.get("/goods/list",{
-              params
-            }).then(res=>{
+            // axios.get("/goods/list",{
+            //   params
+            // }).then(res=>{
+            //   this.loading=false
+            //   if(flag){
+            //     this.goodsList=this.goodsList.concat(res.data.result.list)
+            //     if(res.data.result.count===0){
+            //       this.busy=true
+            //     }
+            //     else if(res.data.result.count<8){
+            //       this.busy=true
+            //     }
+            //     else{W
+            //       this.busy=false
+            //     }
+            //   }else{
+            //     this.goodsList=res.data.result.list
+            //   }
+             
+            // })
+            this.$testApi.testApi.test2(params1).then(res=>{
               this.loading=false
               if(flag){
                 this.goodsList=this.goodsList.concat(res.data.result.list)
@@ -147,7 +165,6 @@
               }else{
                 this.goodsList=res.data.result.list
               }
-             
             })
           },
           loadMore(){
@@ -182,17 +199,27 @@
             obj.id=1
             obj.sex="男"
             console.log(obj,"进入加入购物车")
-            axios.post("/goods/addCart",{productId}).then(res=>{
-             console.log(res,'10000000000000000000')
+            // axios.post("/goods/addCart",{productId}).then(res=>{
+            //  console.log(res,'10000000000000000000')
+            //   if(res.data.status=="0"){
+            //  this.mdShowCart=true
+            //  this.$store.commit("updateCount",1)
+            //   }else{
+            //    this.mdShow=true
+            //   }
+            // })
+           this.$testApi.testApi.test({productId}).then(res=>{
+                  console.log(res,'10000000000000000000')
               if(res.data.status=="0"){
              this.mdShowCart=true
+             this.$store.commit("updateCount",1)
               }else{
                this.mdShow=true
               }
             })
           },
           closeModal(){
-               this.mdShow=false
+               this.mdShowCart=false
           }
         }
     }

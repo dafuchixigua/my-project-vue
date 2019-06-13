@@ -5,6 +5,7 @@ import GoodsList from './../views/GoodsList.vue'
 import Cart from './../views/Cart.vue'
 import Address from './../views/Address.vue'
 import OrderConfirm from './../views/OrderConfirm.vue'
+import OrderSuccess from './../views/OrderSuccess.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -12,7 +13,8 @@ export default new Router({
     {
       path: '/',
       name: 'GoodsList',
-      component: GoodsList
+      component: GoodsList,
+    
     },
     {
       path: '/cart',
@@ -22,12 +24,23 @@ export default new Router({
     {
       path: '/address',
       name: 'Address',
-      component: Address
+      component: Address,
+    //   children:[{
+    //  path: '/orderConfirm/:addressId/:id',
+    //   name: 'OrderConfirm',
+    //   component: OrderConfirm
+    //   }]
     },
     {
       path: '/orderConfirm/:addressId/:id',
       name: 'OrderConfirm',
       component: OrderConfirm
     },
+    {
+      path: '/orderSuccess',
+      name: 'OrderSuccess',
+      component: OrderSuccess
+    },
+
   ]
 })

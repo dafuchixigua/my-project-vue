@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 let User=require('./../models/user')
+require('./../util/util')
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
@@ -242,5 +243,127 @@ router.post("/addressDel",(req,res,next)=>{
       })
     }
   })
+})
+router.post("/payMent",(req,res,next)=>{
+  let userId=req.cookies.userId,
+      orderTotal=req.body.orderTotal,
+      addressId=req.body.addressId
+      User.findOne({userId},(err,doc)=>{
+        if(err){
+          res.json({
+            status:"1",
+            msg:err.message,
+            result:""
+          })
+        }else{
+          //获取用户当前地址信息
+          let address=''
+          doc.addressList.forEach(item => {
+            if(item.addressId==addressId){
+              address=item
+            }
+          });
+          
+          //获取用户购物车购买商品
+        let goodsList = doc.cartList.filter(item=>{
+          return item.checked=='1'
+        })
+        let platForm="622"
+        let r1=Math.floor(Math.random()*10)
+        let r2=Math.floor(Math.random()*10)
+        let sysDate=new Date().Format('yyyyMMddhhmmss')
+        let createDate=new Date().Format('yyyy-MM--dd hh:mm:ss')
+        let orderId=platForm+r1+sysDate+r2
+        let order={
+          orderId:orderId,
+          orderTotal:orderTotal,
+          addressInfo:address,
+          goodsList:goodsList,
+          addressStatus:"1",
+          createDate:createDate
+        }
+        doc.orderList.push(order)
+        doc.save((err1,doc1)=>{
+          if(err1){
+            res.json({
+              status:"1",
+              msg:err1.message,
+              result:""
+            })
+          }else{
+            res.json({
+              status:"0",
+              msg:"",
+              result:{
+                  orderId:order.orderId,
+                  orderTotal:order.orderTotal
+              }
+            })
+          }
+        })
+      
+        }
+      })
+})
+//根据订单id查询订单信息  
+router.get("/orderDetails",(req,res,next)=>{
+  let userId=req.cookies.userId,
+      orderId=req.query.orderId
+ 
+      User.findOne({userId},(err,doc)=>{
+        if(err){
+          res.json({
+            status:"1",
+            msg:err.message,
+            result:""
+          })
+        }else{
+          let orderList=doc.orderList
+          if(orderList.length>0){
+            let orderTotal=0
+            for(let v of orderList){
+              if(v.orderId==orderId){
+                orderTotal=v.orderTotal
+              }
+            } res.json({
+              status:"0",
+              msg:'',
+              result:{
+                orderId:orderId,
+                orderTotal:orderTotal
+              }
+            })
+          }else[
+            res.json({
+              status:"12001",
+              msg:'该用户无订单',
+              result:""
+            })
+          ]
+        }
+      })
+})
+router.get("/getCartCount",(req,res,next)=>{
+    let userId=req.cookies.userId
+    User.findOne({userId},(err,doc)=>{
+      if(err){
+        res.json({
+          status:"1",
+          msg:err.message,
+          result:""
+        })
+      }else{
+        let cartList=doc.cartList
+        let  cartCount=0
+        cartList.forEach(item=>{
+          cartCount+=parseInt(item.productNum)
+        })
+        res.json({
+          status:"0",
+          msg:'',
+          result:cartCount
+        })
+      }
+    })
 })
 module.exports = router;

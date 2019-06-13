@@ -5,17 +5,41 @@ import App from './App'
 import router from './router'
 import VueLazyLoad from 'vue-lazyload'
 import infiniteScroll from 'vue-infinite-scroll'
-// import {currency} from './utils/currency'
+import {currency} from './utils/currency'
+import vuex from 'vuex'
+import testApi from './api/api'
+import { from } from '_array-flatten@2.1.2@array-flatten';
 Vue.config.productionTip = false
 Vue.use(VueLazyLoad,{
   loading:'/static/loading-svg/loading-bars.svg'
 })
+Vue.prototype.$testApi=testApi
 Vue.use(infiniteScroll)
-// Vue.filter("currency",currency)
+Vue.use(vuex)
+
+Vue.filter("currency",currency)
+const store=new vuex.Store({
+  state:{
+    nickName:"",
+    cartCount:0
+  },
+  mutations:{
+    updateUserInfo(state,nickName){
+      return state.nickName=nickName
+    },
+    updateCount(state,cartCount){
+      return state.cartCount+=cartCount
+    },
+    initCount(state,cartCount){
+      return state.cartCount=cartCount
+    }
+  }
+})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
