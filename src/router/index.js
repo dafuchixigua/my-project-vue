@@ -6,14 +6,24 @@ import Cart from './../views/Cart.vue'
 import Address from './../views/Address.vue'
 import OrderConfirm from './../views/OrderConfirm.vue'
 import OrderSuccess from './../views/OrderSuccess.vue'
+import artIndex from './../views/artIndex'
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    // {
+    //   path: '/',
+    //   name: 'GoodsList',
+    //   component: GoodsList,
+    
+    // },
     {
       path: '/',
-      name: 'GoodsList',
-      component: GoodsList,
+      name: 'artIndex',
+      component: artIndex,
+      meta:{
+        title:"首页"
+      }
     
     },
     {

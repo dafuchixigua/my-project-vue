@@ -1,4 +1,5 @@
     import axios from 'axios'
+
     function allapi(data){
         
     return  axios({
@@ -14,6 +15,7 @@ const testApi={
     test:params=>allapi({params:params,url:'/goods/addCart',type:'post'}),
     test2:params=>allapi({params:params,url:'/goods/list',type:'get'})
 }
+
 export default {
     testApi
 }

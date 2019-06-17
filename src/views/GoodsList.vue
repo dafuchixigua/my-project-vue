@@ -2,7 +2,7 @@
     <div>
     <nav-header></nav-header>
   <nav-bread>
-      <span slot="one">Goods/</span>
+      <span slot="one">/</span>
   </nav-bread>
       <div class="accessory-result-page accessory-page">
         <div class="container">

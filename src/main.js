@@ -8,7 +8,14 @@ import infiniteScroll from 'vue-infinite-scroll'
 import {currency} from './utils/currency'
 import vuex from 'vuex'
 import testApi from './api/api'
-import { from } from '_array-flatten@2.1.2@array-flatten';
+
+import  './utils/lib-flexible-min'
+import VueWechatTitle from 'vue-wechat-title'
+import { AlertPlugin, ToastPlugin } from 'vux'
+
+
+
+Vue.use(VueWechatTitle) //vue设置标题组件
 Vue.config.productionTip = false
 Vue.use(VueLazyLoad,{
   loading:'/static/loading-svg/loading-bars.svg'
