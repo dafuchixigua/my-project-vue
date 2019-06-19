@@ -44,8 +44,11 @@ export default {
       this.showAddress = !this.showAddress
     },
     onShadowChange (ids, names) {
+      if(ids&&names){
       console.log(ids, names)
       this.top_tittle_faker=names[2]
+      }
+
     },
 
     logHide (str) {
@@ -57,11 +60,13 @@ export default {
           }
       }
     },
+    test(){
+      console.log("测试")
+    }
   },
   mounted(){
-      let str=true
-      this.logHide(str)
-  }
+ 
+  },
 }
 </script>
 <style  scoped>

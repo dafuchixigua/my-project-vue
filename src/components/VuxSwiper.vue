@@ -9,7 +9,7 @@
         loop
       >
         <swiper-item class="slide_item" v-for="(item,index) in list" :key="index">
-          <img class="slide-img" :src="item.img" alt @click="toOhters(index)">
+          <img class="slide-img"  :src="item.img" alt @click.native="toOhters(index)">
         </swiper-item>
       </swiper>
     </div>
@@ -17,23 +17,26 @@
 </template>
 
 <script>
-import {Swiper,SwiperItem,Picker} from 'vux'
+import {Swiper,SwiperItem} from 'vux'
 export default {
     props:['list'],
   data() {
-    return {};
+    return {
+      tit:''
+    };
   },
   components: {
       Swiper,
       SwiperItem,
-      Picker
   },
   computed: {},
   methods: {
       toOhters(index){
           // let name="你好"
           // this.$emit('toOhters',index,name)
+         
             this.$router.push({path:'/vuxHeader'});
+             this.tit="你"
       }
   },
   mounted() {}

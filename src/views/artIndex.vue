@@ -17,7 +17,8 @@
         src="https://xiaochengxu-1257423844.cos.ap-chengdu.myqcloud.com/images/cutimage/navigation/navigation_drop-down%402x.png"
         alt
       >-->
-      <vux-address class="address_pick"></vux-address>
+      <button></button>
+      <vux-address class="address_pick" ref="address"></vux-address>
       <div class="search">
         <img
           class="search_icon"
@@ -31,7 +32,7 @@
         class="code"
       >
     </div>
-    <vux-swiper :list="list" @toOhters="toOhters"></vux-swiper>
+    <vux-swiper :list="list" @click.native="toOhters" ></vux-swiper>
     <div class="kim">
       <div v-for="(item,index) in kimList" :key="index">
         <div class="kim_chunk">
@@ -177,8 +178,13 @@ export default {
   mounted() {},
   computed: {},
   methods: {
-    toOhters() {
+    testRef(){
+            console.log("测试主")
+        this.$refs.address.test("你好")
   
+    },
+    toOhters() {
+         this.$refs.address.onShadowChange()
       this.$router.push({path:'/vuxHeader'});
     }
   }
