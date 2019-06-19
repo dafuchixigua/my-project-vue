@@ -1,4 +1,4 @@
-<!--  -->
+
 <template>
   <div>
 
@@ -153,6 +153,7 @@
     import { constants } from 'fs';
     import Modal from './../components/modal'
     import {currency} from './../utils/currency'
+    import VuxHeader from './../components/VuxHeader'
 export default {
     
   data () {
@@ -170,7 +171,8 @@ export default {
             NavHeader,
             NavFooter,
             NavBread,
-            Modal
+            Modal,
+            VuxHeader
     },
   mounted(){
     this.init()

@@ -7,6 +7,7 @@ import Address from './../views/Address.vue'
 import OrderConfirm from './../views/OrderConfirm.vue'
 import OrderSuccess from './../views/OrderSuccess.vue'
 import artIndex from './../views/artIndex'
+import VuxHeader from './../components/VuxHeader.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -30,6 +31,11 @@ export default new Router({
       path: '/cart',
       name: 'Cart',
       component: Cart
+    },
+    {
+      path: '/vuxHeader',
+      name: 'VuxHeader',
+      component: VuxHeader
     },
     {
       path: '/address',

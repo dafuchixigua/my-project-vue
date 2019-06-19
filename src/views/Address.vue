@@ -169,6 +169,7 @@ export default {
   },
     mounted(){
         this.init()
+       console.log(this.$route.params,'5555进入') 
     },
   computed: {
       addressListFilter(){

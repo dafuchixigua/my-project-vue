@@ -8,8 +8,8 @@ import infiniteScroll from 'vue-infinite-scroll'
 import {currency} from './utils/currency'
 import vuex from 'vuex'
 import testApi from './api/api'
-
-import  './utils/lib-flexible-min'
+import 'lib-flexible/flexible'
+// import  './utils/lib-flexible-min'
 import VueWechatTitle from 'vue-wechat-title'
 import { AlertPlugin, ToastPlugin } from 'vux'
 

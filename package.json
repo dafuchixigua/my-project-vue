@@ -20,6 +20,7 @@
     "jade": "~1.11.0",
     "less": "^3.9.0",
     "less-loader": "^5.0.0",
+    "lib-flexible": "^0.3.2",
     "mongoose": "^5.5.11",
     "morgan": "~1.9.1",
     "sass": "^1.21.0",
